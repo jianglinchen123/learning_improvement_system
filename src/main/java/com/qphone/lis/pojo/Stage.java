@@ -11,15 +11,17 @@ import java.io.IOException;
  */
 public class Stage implements WritableComparable<Stage> {
     private int id;
-    private String name;
+    private int subject_id;
+    private String subject_name;
     private int pId;
 
     public Stage() {
     }
 
-    public Stage(int id, String name, int pId) {
+    public Stage(int id, int subject_id, String subject_name, int pId) {
         this.id = id;
-        this.name = name;
+        this.subject_id = subject_id;
+        this.subject_name = subject_name;
         this.pId = pId;
     }
 
@@ -31,12 +33,20 @@ public class Stage implements WritableComparable<Stage> {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public int getSubject_id() {
+        return subject_id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSubject_id(int subject_id) {
+        this.subject_id = subject_id;
+    }
+
+    public String getSubject_name() {
+        return subject_name;
+    }
+
+    public void setSubject_name(String subject_name) {
+        this.subject_name = subject_name;
     }
 
     public int getpId() {
@@ -47,6 +57,12 @@ public class Stage implements WritableComparable<Stage> {
         this.pId = pId;
     }
 
+
+    @Override
+    public String toString() {
+        return id + "\001" + subject_id + "\001" + subject_name + "\001" + pId;
+    }
+
     @Override
     public int compareTo(Stage o) {
         return 0;
@@ -55,19 +71,16 @@ public class Stage implements WritableComparable<Stage> {
     @Override
     public void write(DataOutput dataOutput) throws IOException {
         dataOutput.writeInt(id);
-        dataOutput.writeUTF(name);
+        dataOutput.writeInt(subject_id);
+        dataOutput.writeUTF(subject_name);
         dataOutput.writeInt(pId);
     }
 
     @Override
     public void readFields(DataInput dataInput) throws IOException {
         id = dataInput.readInt();
-        name = dataInput.readUTF();
+        subject_id = dataInput.readInt();
+        subject_name = dataInput.readUTF();
         pId = dataInput.readInt();
-    }
-
-    @Override
-    public String toString() {
-        return id + "\001" + name + "\001" + pId;
     }
 }
