@@ -4,7 +4,6 @@ package com.qphone.lis.mapreduce;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.qphone.lis.pojo.AnswerPaper;
 import com.qphone.lis.pojo.Stage;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -53,6 +52,7 @@ public class StageDriver {
                 stage.setpId(Integer.parseInt(pId));
                 context.write(NullWritable.get(),stage);
             }
+
         }
     }
 }
