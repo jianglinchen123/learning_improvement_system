@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.qphone.lis.md5.MD5;
 import com.qphone.lis.pojo.AnswerPaper;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
@@ -29,8 +30,13 @@ public class AnswerPaperDriver {
         job.setMapperClass(AnswerPaperMapper.class);
         job.setMapOutputKeyClass(NullWritable.class);
         job.setMapOutputValueClass(AnswerPaper.class);
-        FileInputFormat.setInputPaths(job,new Path("D://1.txt"));
-        FileOutputFormat.setOutputPath(job,new Path("D://output"));
+        FileInputFormat.setInputPaths(job,new Path(args[0]));
+        Path dstPath = new Path(args[1]);
+        FileSystem fileSystem = dstPath.getFileSystem(conf);
+        if (fileSystem.exists(dstPath)) {
+            fileSystem.delete(dstPath,true);
+        }
+        FileOutputFormat.setOutputPath(job,dstPath);
         Boolean res = job.waitForCompletion(true);
         System.out.println(res ? "true" : "false");
     }
@@ -67,6 +73,11 @@ public class AnswerPaperDriver {
                     real_score = ""+0;
                 }
                 answerPaper.setReal_score(Integer.parseInt(real_score));
+                if ("0".equals(real_score)) {
+                    answerPaper.setIs_right(0);
+                } else {
+                    answerPaper.setIs_right(1);
+                }
                 context.write(NullWritable.get(),answerPaper);
             }
             JSONObject json_subjective = JSON.parseObject(infos[17]);
@@ -82,6 +93,11 @@ public class AnswerPaperDriver {
                 answerPaper.setQuestion_id(Integer.parseInt(question_id));
                 if ("null".equals(real_score) || real_score == null || real_score.isEmpty()) {
                     real_score = ""+0;
+                }
+                if ("0".equals(real_score)) {
+                    answerPaper.setIs_right(0);
+                } else {
+                    answerPaper.setIs_right(1);
                 }
                 answerPaper.setReal_score(Integer.parseInt(real_score));
                 context.write(NullWritable.get(),answerPaper);

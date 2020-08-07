@@ -21,11 +21,12 @@ public class AnswerPaper implements WritableComparable<AnswerPaper> {
     private int subject_mark;
     private int question_id;
     private int real_score;
+    private int is_right;
 
     public AnswerPaper() {
     }
 
-    public AnswerPaper(int exam_id, int paper_id, String examinee_id, String examinee_name, String class_id, int exam_time, int objective_mark, int subject_mark, int question_id, int real_score) {
+    public AnswerPaper(int exam_id, int paper_id, String examinee_id, String examinee_name, String class_id, int exam_time, int objective_mark, int subject_mark, int question_id, int real_score, int is_right) {
         this.exam_id = exam_id;
         this.paper_id = paper_id;
         this.examinee_id = examinee_id;
@@ -36,6 +37,7 @@ public class AnswerPaper implements WritableComparable<AnswerPaper> {
         this.subject_mark = subject_mark;
         this.question_id = question_id;
         this.real_score = real_score;
+        this.is_right = is_right;
     }
 
     public String getExaminee_name() {
@@ -118,6 +120,14 @@ public class AnswerPaper implements WritableComparable<AnswerPaper> {
         this.real_score = real_score;
     }
 
+    public int getIs_right() {
+        return is_right;
+    }
+
+    public void setIs_right(int is_right) {
+        this.is_right = is_right;
+    }
+
     @Override
     public int compareTo(AnswerPaper o) {
         return 0;
@@ -135,6 +145,7 @@ public class AnswerPaper implements WritableComparable<AnswerPaper> {
         dataOutput.writeInt(subject_mark);
         dataOutput.writeInt(question_id);
         dataOutput.writeInt(real_score);
+        dataOutput.writeInt(is_right);
     }
 
     @Override
@@ -149,10 +160,11 @@ public class AnswerPaper implements WritableComparable<AnswerPaper> {
         subject_mark = dataInput.readInt();
         question_id = dataInput.readInt();
         real_score = dataInput.readInt();
+        is_right = dataInput.readInt();
     }
 
     @Override
     public String toString() {
-        return exam_id + "\001" + paper_id + "\001" + examinee_id + "\001" + examinee_name + "\001" + class_id + "\001" + exam_time + "\001" + objective_mark + "\001" + subject_mark + "\001" + question_id + "\001" + real_score;
+        return exam_id + "\001" + paper_id + "\001" + examinee_id + "\001" + examinee_name + "\001" + class_id + "\001" + exam_time + "\001" + objective_mark + "\001" + subject_mark + "\001" + question_id + "\001" + real_score + "\001" + is_right;
     }
 }
